@@ -11,7 +11,6 @@
 using namespace cv;
 using namespace std;
 
-//notice: ?? double ? can set problem
 
 int main(int argc, char ** argv)
 {
@@ -34,16 +33,13 @@ int main(int argc, char ** argv)
   if( instruction == "TV" )
     {
       Mat img = imread(argv[2], CV_LOAD_IMAGE_GRAYSCALE);
-	  //NORM_TV function
       cout << NORM_TV(img) << endl;
     }
   if( instruction == "TVPHI")
     {
       Mat img = imread(argv[2], CV_LOAD_IMAGE_GRAYSCALE);
       LRTVPHI lrttv;
-	  //LRTVPHI object
       lrttv.setShrinkageParam(1.0, 1.0);
-	  //NORM_TVPHI function
       cout << lrttv.NORM_TVPHI(img) << endl;
     }
   else if( instruction == "P" )
@@ -51,13 +47,12 @@ int main(int argc, char ** argv)
       Mat original = imread(argv[2], CV_LOAD_IMAGE_GRAYSCALE);
       Mat inpainted = imread(argv[4], CV_LOAD_IMAGE_GRAYSCALE);
       Mat mask = imread(argv[3], CV_LOAD_IMAGE_GRAYSCALE);
-	  //PSNR functin
       cout << PSNR(original, inpainted, mask) << endl;
     }
   else if( instruction == "G" )
     {
       string disparityPath = argv[2];
-      int missingRate = atof(argv[3]);//atof function??
+      int missingRate = atof(argv[3]);
       string outputMask = argv[4];
       string outputMissing = argv[5];
       Mat disparityOriginal = imread(disparityPath, CV_LOAD_IMAGE_GRAYSCALE);
