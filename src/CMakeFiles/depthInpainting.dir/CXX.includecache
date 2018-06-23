@@ -18,6 +18,20 @@ list
 tnnr.h
 /home/hy/depthInpainting-master/src/tnnr.h
 
+/home/hy/depthInpainting-master/src/LRL0PHI.cpp
+LRL0PHI.hpp
+/home/hy/depthInpainting-master/src/LRL0PHI.hpp
+util.h
+/home/hy/depthInpainting-master/src/util.h
+map
+-
+list
+-
+fstream
+-
+common.h
+/home/hy/depthInpainting-master/src/common.h
+
 /home/hy/depthInpainting-master/src/LRL0PHI.hpp
 opencv2/opencv.hpp
 -
@@ -29,12 +43,6 @@ list
 -
 tnnr.h
 /home/hy/depthInpainting-master/src/tnnr.h
-
-/home/hy/depthInpainting-master/src/LRTV.cpp
-LRTV.h
-/home/hy/depthInpainting-master/src/LRTV.h
-util.h
-/home/hy/depthInpainting-master/src/util.h
 
 /home/hy/depthInpainting-master/src/LRTV.h
 opencv2/opencv.hpp
@@ -60,6 +68,14 @@ eigen3/Eigen/Core
 eigen3/Eigen/Dense
 -
 eigen3/Eigen/SparseQR
+-
+
+/home/hy/depthInpainting-master/src/common.h
+map
+-
+list
+-
+opencv2/opencv.hpp
 -
 
 /home/hy/depthInpainting-master/src/main.cpp
