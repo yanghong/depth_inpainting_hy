@@ -142,7 +142,7 @@ int main(int argc, char ** argv)
       // try our TV
       // we can use low rank to initialize U_
       //Mat denoised = TNNR(disparityMissing, mask, 9, 9, 0.06);
-      Mat denoised = imread(argv[5], CV_LOAD_IMAGE_GRAYSCALE);
+      Mat denoised = imread(argv[5], CV_LOAD_IMAGE_GRAYSCALE);   //?? Is this use TNNR generate denoised and then imread it ?
 
       LRTV lrtv(disparityMissing, mask);
       // rho dt lambda_tv lambda_rank 100 10
@@ -155,8 +155,8 @@ int main(int argc, char ** argv)
       
       Mat output;
       result.convertTo(output, CV_8UC1);
-      imwrite(inpaintedPath, output);
-      imwrite("M.png", M);
+      imwrite(inpaintedPath, output);   //This is the main png 
+      imwrite("M.png", M);   //generate two png
       imwrite("Y.png", Y);
 
     }
@@ -325,6 +325,7 @@ int main(int argc, char ** argv)
       LRL0 lrl0(disparityMissing, mask);
       lrl0.setParameters(1.2,0.1,lambda_l0,10);
       lrl0.init_U(denoised);
+	  //?? does this path1 is useful?
       Mat result = lrl0.compute(K, max_iter, inpaintedPath, orig, path1);
       // Mat output;
       //result.convertTo(output, CV_8UC1);
