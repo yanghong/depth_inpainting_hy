@@ -115,7 +115,7 @@ void LRL0PHI::sub_1(int K)
     {
         for(int j = 0; j < U_.cols; j++)
         {
-            int index = i*U_.cols+j;
+            int index = i*U_.cols+j;    //某一像素定位点
             element temp;
             temp.G.push_back(index);
             temp.w = 1;
