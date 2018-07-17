@@ -110,6 +110,7 @@ void LRL0PHI::sub_1(int K)
 
     float epsilon = 1.0e-4;
     map<int, element> I;
+	// travel every pixel in U_
     for(int i = 0; i < U_.rows; i++)
     {
         for(int j = 0; j < U_.cols; j++)
@@ -154,6 +155,7 @@ void LRL0PHI::sub_1(int K)
             I.insert(pair<int,element>(index,temp));
         }
     }
+    // Get element I(map<int, element>) Done.
     //    cout << "1 is done" << endl;
     map<int, element>::iterator i;
     for(i = I.begin(); i != I.end(); ++i)
@@ -378,6 +380,7 @@ Mat LRL0PHI::compute(int K, int max_iter, string path, Mat &original, string pat
       file1.close();
       cout << "result psnr in " + filePath << endl;
       // when to stop needs further con sideration
+	  // this code can't understand now??
       if( iter >= 1 && norm(U_, U_last_) / norm(U_last_) < 1e-3 )
 	{
 	  break;
