@@ -47,49 +47,54 @@ int iters1;
 //     return p;
 // }
 
+// 返回U_
 Mat LRL0PHI::getU()
 {
     return U_;
 }
 
+// 返回M_
 Mat LRL0PHI::getM()
 {
     return M_;
 }
 
+// 返回Y_
 Mat LRL0PHI::getY()
 {
     return Y_;
 }
 
+// 初始化 M_
 void LRL0PHI::init_U(Mat &u0)
 {
     u0.convertTo(M_, CV_32FC1);
 }
 
+// 初始化LRL0PHI.hpp中定义的各种矩阵
 // mask: uint8_t type 1 channel taking values 0 and 255
 // I: uint8_t grayscale image
 LRL0PHI::LRL0PHI(Mat &I, Mat &mask)
 {
-    W_ = I.cols;
-    H_ = I.rows;
-    I_ = Mat::zeros(H_, W_, CV_32F);
-    mask_ = Mat::zeros(H_, W_, CV_32F);
+    W_ = I.cols;  //列（宽度）
+    H_ = I.rows;  //行（高度）
+    I_ = Mat::zeros(H_, W_, CV_32F);  // 全为0的同型矩阵
+    mask_ = Mat::zeros(H_, W_, CV_32F);  // 全为0的同型矩阵
     
-    I.convertTo(I_, CV_32FC1, 1.0);
-    mask.convertTo(mask_, CV_32FC1, 1.0/255.0);
+    I.convertTo(I_, CV_32FC1, 1.0);  // I转化为全为1的同型矩阵，像素类型为CV_32FC1
+    mask.convertTo(mask_, CV_32FC1, 1.0/255.0);  // mask转化为全为1.0/255.0的同型矩阵，像素类型为CV_32FC1
     // initialize
-    U_ = Mat::zeros(H_, W_, CV_32F);
-    U_last_ = Mat::zeros(H_, W_, CV_32F);
+    U_ = Mat::zeros(H_, W_, CV_32F); // U_初始化为0的同型矩阵
+    U_last_ = Mat::zeros(H_, W_, CV_32F);  // U_last_初始化为0的同型矩阵
     // internal variables
-    M_ = Mat::zeros(H_, W_, CV_32F);
-    Y_ = Mat::zeros(H_, W_, CV_32F);
+    M_ = Mat::zeros(H_, W_, CV_32F);  // M_初始化为0的同型矩阵
+    Y_ = Mat::zeros(H_, W_, CV_32F);  // Y_初始化为0的同型矩阵
     
     // make gradient operators
-    kernelx_plus_ = (Mat_<float>(1,3)<<0.0,-1.0,1.0);
-    kernelx_minus_ = (Mat_<float>(1,3)<<-1.0,1.0,0.0);
-    kernely_plus_ = (Mat_<float>(3,1)<<0.0,-1.0,1.0);
-    kernely_minus_ = (Mat_<float>(3,1)<<-1.0,1.0,0.0);
+    kernelx_plus_ = (Mat_<float>(1,3)<<0.0,-1.0,1.0);   // ?
+    kernelx_minus_ = (Mat_<float>(1,3)<<-1.0,1.0,0.0);   // ?
+    kernely_plus_ = (Mat_<float>(3,1)<<0.0,-1.0,1.0);   // ?
+    kernely_minus_ = (Mat_<float>(3,1)<<-1.0,1.0,0.0);   // ?
 }
 
 void LRL0PHI::setParameters(float rho, float dt, float lambda_l0, float lambda_rank, float k)
@@ -101,7 +106,7 @@ void LRL0PHI::setParameters(float rho, float dt, float lambda_l0, float lambda_r
     lambda_rank_ = lambda_rank; //10;
     lambda_l0_ = lambda_l0;
     k_ = k;
-    //    cout << "set parameters done" << endl;
+    cout << "set parameters done" << endl;
 }
 
 void LRL0PHI::sub_1(int K)
