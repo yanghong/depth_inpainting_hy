@@ -155,6 +155,7 @@ void LRL0PHI::sub_1(int K)
             I.insert(pair<int,element>(index,temp));
         }
     }
+    cout << "I: " << I <<endl;
     // Get element I(map<int, element>) Done.
     //    cout << "1 is done" << endl;
     map<int, element>::iterator i;
@@ -163,6 +164,7 @@ void LRL0PHI::sub_1(int K)
             U_.at<float>(*j/U_.cols, *j % U_.cols) = i->second.Y;
     float beta = 0;
     iter = 0;
+    // 下面的应该是区域融合算法
     while(1)
     {
         map<int,element>::iterator it = I.begin();
@@ -327,7 +329,7 @@ void LRL0PHI::sub_1(int K)
     imwrite("./result/"+name, temp);
 }
 
-
+// LR
 void LRL0PHI::sub_2()
 {
     Mat A = U_ + Y_;
@@ -356,7 +358,7 @@ Mat LRL0PHI::compute(int K, int max_iter, string path, Mat &original, string pat
       cout << "Iter = " << (iter + 1) << endl;
       iters1 = iter;
       sub_1(K);
-      cout << "Piecewise L0 done" << endl;
+      cout << "Piecewise L0 done" << endl;  // 分段 L0  Done
       sub_2();
       cout << "LR done" << endl;
       sub_3();
