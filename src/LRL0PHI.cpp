@@ -122,8 +122,8 @@ void LRL0PHI::sub_1(int K)
         {
             int index = i*U_.cols+j;    //某一像素定位点
             element temp;
-            temp.G.push_back(index);
-            temp.w = 1;
+            temp.G.push_back(index);    // G的类型应该是一个List
+            temp.w = 1;       // w系数的含义
             temp.w_mask = mask_.at<float>(i,j) == 0 ? 0 : 1;
             temp.I_mean = temp.w_mask * I_.at<float>(i,j);
             if(!(temp.I_mean == temp.I_mean))
@@ -135,7 +135,7 @@ void LRL0PHI::sub_1(int K)
             temp.M_mean = M_.at<float>(i,j);
             temp.Y_mean = Y_.at<float>(i,j);
             temp.Y = (float)(temp.w*rho_*(temp.M_mean - temp.Y_mean) + 2*temp.w_mask*temp.I_mean)/
-                     (float)(temp.w*rho_ + 2*temp.w_mask);
+                     (float)(temp.w*rho_ + 2*temp.w_mask);  //Y是求解ADMM最后的一个值
             //temp.Y = U_.at<float>(i,j);
             if(i != 0)
             {
@@ -157,7 +157,7 @@ void LRL0PHI::sub_1(int K)
                 temp.N.push_back(i*U_.cols+j+1);
                 temp.c.insert(pair<int,int>(i*U_.cols+j+1,1));
             }
-            I.insert(pair<int,element>(index,temp));
+            I.insert(pair<int,element>(index,temp));  // I从结构上看temp.N是某一像素的邻接像素
         }
     }
     cout << "I: " << I <<endl;
