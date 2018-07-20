@@ -97,6 +97,7 @@ LRL0PHI::LRL0PHI(Mat &I, Mat &mask)
     kernely_minus_ = (Mat_<float>(3,1)<<-1.0,1.0,0.0);   // ?
 }
 
+// 需要搞清楚这几个参数的含义?
 void LRL0PHI::setParameters(float rho, float dt, float lambda_l0, float lambda_rank, float k)
 {
     rho_ = rho;
@@ -115,14 +116,14 @@ void LRL0PHI::sub_1(int K)
 
     float epsilon = 1.0e-4;
     map<int, element> I;
-	// travel every pixel in U_
+    // travel every pixel in U_
     for(int i = 0; i < U_.rows; i++)
     {
         for(int j = 0; j < U_.cols; j++)
         {
             int index = i*U_.cols+j;    //某一像素定位点
-            element temp;
-            temp.G.push_back(index);    // G的类型应该是一个List
+            element temp;               // 每一个像素都会创建一个temp 
+            temp.G.push_back(index);    // G的类型应该是一个List, index是索引
             temp.w = 1;       // w系数的含义
             temp.w_mask = mask_.at<float>(i,j) == 0 ? 0 : 1;
             temp.I_mean = temp.w_mask * I_.at<float>(i,j);
