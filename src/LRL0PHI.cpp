@@ -136,7 +136,7 @@ void LRL0PHI::sub_1(int K)
             temp.M_mean = M_.at<float>(i,j);
             temp.Y_mean = Y_.at<float>(i,j);
             temp.Y = (float)(temp.w*rho_*(temp.M_mean - temp.Y_mean) + 2*temp.w_mask*temp.I_mean)/
-                     (float)(temp.w*rho_ + 2*temp.w_mask);  //Y是求解ADMM最后的一个值
+                     (float)(temp.w*rho_ + 2*temp.w_mask);  // Y是求解ADMM最后的一个值
             //temp.Y = U_.at<float>(i,j);
             if(i != 0)
             {
@@ -229,13 +229,13 @@ void LRL0PHI::sub_1(int K)
                 }*/
                 // if(!(value1 == value1 && value2 == value2 && value3 == value3))
                 //     cout <<value3 << " " << value2 << " " << value1 << endl;
-                if(value3 < (value1 < value2 ? value1 : value2))
+                if(value3 < (value1 < value2 ? value1 : value2))  // value3 小于value1和value2中的最小值，相当于论文中的fA <= fB and fA <= fC
                 {
                     temp1.Y = Xi;
                     temp2.Y = Xj;
                     j++;
                 }
-                else if(value2 <= (value1 < value3 ? value1 : value3))
+                else if(value2 <= (value1 < value3 ? value1 : value3))   // value2小于 value1和value3 中的最小值，相当于论文中的fB <= fA and fB <= fC
                 {
                     //cout << value2 << " " << value1 << endl;
                     int temp_value = *j;
