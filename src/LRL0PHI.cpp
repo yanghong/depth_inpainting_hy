@@ -91,10 +91,10 @@ LRL0PHI::LRL0PHI(Mat &I, Mat &mask)
     Y_ = Mat::zeros(H_, W_, CV_32F);  // Y_初始化为0的同型矩阵
     
     // make gradient operators
-    kernelx_plus_ = (Mat_<float>(1,3)<<0.0,-1.0,1.0);   // ?
-    kernelx_minus_ = (Mat_<float>(1,3)<<-1.0,1.0,0.0);   // ?
-    kernely_plus_ = (Mat_<float>(3,1)<<0.0,-1.0,1.0);   // ?
-    kernely_minus_ = (Mat_<float>(3,1)<<-1.0,1.0,0.0);   // ?
+    kernelx_plus_ = (Mat_<float>(1,3)<<0.0,-1.0,1.0);   // 定义形状为（1，3）的矩阵
+    kernelx_minus_ = (Mat_<float>(1,3)<<-1.0,1.0,0.0);   // 定义形状为（1，3）的矩阵
+    kernely_plus_ = (Mat_<float>(3,1)<<0.0,-1.0,1.0);   // 定义形状为（3，1）的矩阵
+    kernely_minus_ = (Mat_<float>(3,1)<<-1.0,1.0,0.0);   // 定义形状为（3，1）的矩阵
 }
 
 // 需要搞清楚这几个参数的含义?
