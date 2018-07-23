@@ -7,16 +7,19 @@
 #include "common.h"
 #define garma 2.2
 int iters1;
+
+// element的结构体定义
 // class element{
 // public:
 //     int w;
 //     int w_mask;
 //     float Y;
 //     float M_mean, Y_mean, I_mean;
-//     list<int> G,N;
-//     map<int,int> c;
+//     list<int> G,N;     // 列表
+//     map<int,int> c;    // 以两个整型为一对的图
 // };
 
+// 从列表迭代器中找到值为value的位置
 // list<int>::iterator ffind(list<int>::iterator start, list<int>::iterator end, int value)
 // {
 //     list<int>::iterator p = start;
@@ -35,6 +38,7 @@ int iters1;
 //     return ans;
 // }
 
+// 从图迭代器中找到值为value的位置
 // map<int, int>::iterator ffind(map<int, int>::iterator start, map<int, int>::iterator end, int value)
 // {
 //     map<int, int>::iterator p = start;
@@ -125,8 +129,8 @@ void LRL0PHI::sub_1(int K)
             element temp;               // 每一个像素都会创建一个temp 
             temp.G.push_back(index);    // G的类型应该是一个List, index是索引
             temp.w = 1;       // w系数的含义
-            temp.w_mask = mask_.at<float>(i,j) == 0 ? 0 : 1;
-            temp.I_mean = temp.w_mask * I_.at<float>(i,j);
+            temp.w_mask = mask_.at<float>(i,j) == 0 ? 0 : 1;  // mask_如果在i,j这个位置=0，则temp.w_mask为0，否则为1
+            temp.I_mean = temp.w_mask * I_.at<float>(i,j);  // I_mean等于I_在i,j位置的像素值*此点的w_mask值
             if(!(temp.I_mean == temp.I_mean))
             {
 	      //                cout << mask_.at<float>(i,j) << endl;
@@ -158,15 +162,15 @@ void LRL0PHI::sub_1(int K)
                 temp.N.push_back(i*U_.cols+j+1);
                 temp.c.insert(pair<int,int>(i*U_.cols+j+1,1));
             }
-            I.insert(pair<int,element>(index,temp));  // I从结构上看temp.N是某一像素的邻接像素
+            I.insert(pair<int,element>(index,temp));  // I从结构上看temp.N是某一像素的邻接像素，I的结构是每个像素点的element的索引
         }
     }
     cout << "I: " << I <<endl;
     // Get element I(map<int, element>) Done.
     //    cout << "1 is done" << endl;
-    map<int, element>::iterator i;
-    for(i = I.begin(); i != I.end(); ++i)
-        for(list<int>::iterator j = i->second.G.begin(); j != i->second.G.end(); ++j)
+    map<int, element>::iterator i;   // 以int,element为组合的图的迭代器
+    for(i = I.begin(); i != I.end(); ++i)   // 对I进行遍历
+        for(list<int>::iterator j = i->second.G.begin(); j != i->second.G.end(); ++j)  // 对I中的G进行遍历
             U_.at<float>(*j/U_.cols, *j % U_.cols) = i->second.Y;
     float beta = 0;
     iter = 0;
