@@ -177,17 +177,17 @@ void LRL0PHI::sub_1(int K)
     // 下面的应该是区域融合算法
     while(1)
     {
-        map<int,element>::iterator it = I.begin();
+        map<int,element>::iterator it = I.begin();  // 遍历I的迭代器it
         while(it != I.end())
         {
             int i = it->first;
-            for(list<int>::iterator j = I[i].N.begin(); j != I[i].N.end();)
+            for(list<int>::iterator j = I[i].N.begin(); j != I[i].N.end();)  // 对I中每一个元素的领域N进行遍历
             {
                 float value1 = 0;
                 float value2 = 0;
                 float value3 = 0;
                 element temp1 = I[i];
-                element temp2 = I[*j];
+                element temp2 = I[*j];    // 为什么这里要用指针?
                 value1 = (temp1.w * temp1.w_mask * rho_ * pow(temp1.I_mean - temp1.M_mean + temp1.Y_mean,
                              2) / (temp1.w * rho_ + 2 * temp1.w_mask)) +
                          (temp2.w * temp2.w_mask * rho_ * pow(temp2.I_mean - temp2.M_mean + temp2.Y_mean, 2) / (temp2.w * rho_ + 2 * temp2.w_mask)) +
@@ -243,7 +243,7 @@ void LRL0PHI::sub_1(int K)
                 {
                     //cout << value2 << " " << value1 << endl;
                     int temp_value = *j;
-                    list<int> t1 = I[i].G;
+                    list<int> t1 = I[i].G;  // 该像素下的邻近区域，不同于N，这个邻近区域的概念应该比较大一点的区域,可以参考论文[28]
                     list<int> t2 = I[*j].G;
                     I[i].Y = X;
                     I[i].Y_mean = (I[i].Y_mean*I[i].w + I[*j].Y_mean*I[*j].w)/(I[i].w + I[*j].w);
