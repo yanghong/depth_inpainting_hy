@@ -1,9 +1,9 @@
-#include "LRL0PHI.hpp"
-#include "util.h"
 #include <map>
 #include <list>
 #include <fstream>
 //#include "LRL0.hpp"
+#include "LRL0PHI.hpp"
+#include "util.h"
 #include "common.h"
 #define garma 2.2
 int iters1;
@@ -62,6 +62,7 @@ Mat LRL0PHI::getY()
     return Y_;
 }
 
+// change to 32bit grayImage
 void LRL0PHI::init_U(Mat &u0)
 {
     u0.convertTo(M_, CV_32FC1);

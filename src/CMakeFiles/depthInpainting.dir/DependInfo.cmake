@@ -8,6 +8,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/hy/depthInpainting-master/src/LRL0PHI.cpp" "/home/hy/depthInpainting-master/src/CMakeFiles/depthInpainting.dir/LRL0PHI.o"
   "/home/hy/depthInpainting-master/src/LRTV.cpp" "/home/hy/depthInpainting-master/src/CMakeFiles/depthInpainting.dir/LRTV.o"
   "/home/hy/depthInpainting-master/src/LRTVPHI.cpp" "/home/hy/depthInpainting-master/src/CMakeFiles/depthInpainting.dir/LRTVPHI.o"
+  "/home/hy/depthInpainting-master/src/NonNorm.cpp" "/home/hy/depthInpainting-master/src/CMakeFiles/depthInpainting.dir/NonNorm.o"
   "/home/hy/depthInpainting-master/src/common.cpp" "/home/hy/depthInpainting-master/src/CMakeFiles/depthInpainting.dir/common.o"
   "/home/hy/depthInpainting-master/src/main.cpp" "/home/hy/depthInpainting-master/src/CMakeFiles/depthInpainting.dir/main.o"
   "/home/hy/depthInpainting-master/src/tnnr.cpp" "/home/hy/depthInpainting-master/src/CMakeFiles/depthInpainting.dir/tnnr.o"

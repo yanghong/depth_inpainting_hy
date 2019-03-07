@@ -95,9 +95,32 @@ CMakeFiles/depthInpainting.dir/main.o.provides: CMakeFiles/depthInpainting.dir/m
 
 CMakeFiles/depthInpainting.dir/main.o.provides.build: CMakeFiles/depthInpainting.dir/main.o
 
+CMakeFiles/depthInpainting.dir/NonNorm.o: CMakeFiles/depthInpainting.dir/flags.make
+CMakeFiles/depthInpainting.dir/NonNorm.o: NonNorm.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/depthInpainting.dir/NonNorm.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/depthInpainting.dir/NonNorm.o -c /home/hy/depthInpainting-master/src/NonNorm.cpp
+
+CMakeFiles/depthInpainting.dir/NonNorm.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/depthInpainting.dir/NonNorm.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/hy/depthInpainting-master/src/NonNorm.cpp > CMakeFiles/depthInpainting.dir/NonNorm.i
+
+CMakeFiles/depthInpainting.dir/NonNorm.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/depthInpainting.dir/NonNorm.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/hy/depthInpainting-master/src/NonNorm.cpp -o CMakeFiles/depthInpainting.dir/NonNorm.s
+
+CMakeFiles/depthInpainting.dir/NonNorm.o.requires:
+.PHONY : CMakeFiles/depthInpainting.dir/NonNorm.o.requires
+
+CMakeFiles/depthInpainting.dir/NonNorm.o.provides: CMakeFiles/depthInpainting.dir/NonNorm.o.requires
+	$(MAKE) -f CMakeFiles/depthInpainting.dir/build.make CMakeFiles/depthInpainting.dir/NonNorm.o.provides.build
+.PHONY : CMakeFiles/depthInpainting.dir/NonNorm.o.provides
+
+CMakeFiles/depthInpainting.dir/NonNorm.o.provides.build: CMakeFiles/depthInpainting.dir/NonNorm.o
+
 CMakeFiles/depthInpainting.dir/LRL0PHI.o: CMakeFiles/depthInpainting.dir/flags.make
 CMakeFiles/depthInpainting.dir/LRL0PHI.o: LRL0PHI.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/depthInpainting.dir/LRL0PHI.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/depthInpainting.dir/LRL0PHI.o -c /home/hy/depthInpainting-master/src/LRL0PHI.cpp
 
@@ -120,7 +143,7 @@ CMakeFiles/depthInpainting.dir/LRL0PHI.o.provides.build: CMakeFiles/depthInpaint
 
 CMakeFiles/depthInpainting.dir/LRTVPHI.o: CMakeFiles/depthInpainting.dir/flags.make
 CMakeFiles/depthInpainting.dir/LRTVPHI.o: LRTVPHI.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/depthInpainting.dir/LRTVPHI.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/depthInpainting.dir/LRTVPHI.o -c /home/hy/depthInpainting-master/src/LRTVPHI.cpp
 
@@ -143,7 +166,7 @@ CMakeFiles/depthInpainting.dir/LRTVPHI.o.provides.build: CMakeFiles/depthInpaint
 
 CMakeFiles/depthInpainting.dir/tnnr.o: CMakeFiles/depthInpainting.dir/flags.make
 CMakeFiles/depthInpainting.dir/tnnr.o: tnnr.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/depthInpainting.dir/tnnr.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/depthInpainting.dir/tnnr.o -c /home/hy/depthInpainting-master/src/tnnr.cpp
 
@@ -166,7 +189,7 @@ CMakeFiles/depthInpainting.dir/tnnr.o.provides.build: CMakeFiles/depthInpainting
 
 CMakeFiles/depthInpainting.dir/util.o: CMakeFiles/depthInpainting.dir/flags.make
 CMakeFiles/depthInpainting.dir/util.o: util.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/depthInpainting.dir/util.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/depthInpainting.dir/util.o -c /home/hy/depthInpainting-master/src/util.cpp
 
@@ -189,7 +212,7 @@ CMakeFiles/depthInpainting.dir/util.o.provides.build: CMakeFiles/depthInpainting
 
 CMakeFiles/depthInpainting.dir/common.o: CMakeFiles/depthInpainting.dir/flags.make
 CMakeFiles/depthInpainting.dir/common.o: common.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/depthInpainting.dir/common.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/depthInpainting.dir/common.o -c /home/hy/depthInpainting-master/src/common.cpp
 
@@ -212,7 +235,7 @@ CMakeFiles/depthInpainting.dir/common.o.provides.build: CMakeFiles/depthInpainti
 
 CMakeFiles/depthInpainting.dir/LRTV.o: CMakeFiles/depthInpainting.dir/flags.make
 CMakeFiles/depthInpainting.dir/LRTV.o: LRTV.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/depthInpainting.dir/LRTV.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/depthInpainting.dir/LRTV.o -c /home/hy/depthInpainting-master/src/LRTV.cpp
 
@@ -237,6 +260,7 @@ CMakeFiles/depthInpainting.dir/LRTV.o.provides.build: CMakeFiles/depthInpainting
 depthInpainting_OBJECTS = \
 "CMakeFiles/depthInpainting.dir/LRL0.o" \
 "CMakeFiles/depthInpainting.dir/main.o" \
+"CMakeFiles/depthInpainting.dir/NonNorm.o" \
 "CMakeFiles/depthInpainting.dir/LRL0PHI.o" \
 "CMakeFiles/depthInpainting.dir/LRTVPHI.o" \
 "CMakeFiles/depthInpainting.dir/tnnr.o" \
@@ -249,6 +273,7 @@ depthInpainting_EXTERNAL_OBJECTS =
 
 depthInpainting: CMakeFiles/depthInpainting.dir/LRL0.o
 depthInpainting: CMakeFiles/depthInpainting.dir/main.o
+depthInpainting: CMakeFiles/depthInpainting.dir/NonNorm.o
 depthInpainting: CMakeFiles/depthInpainting.dir/LRL0PHI.o
 depthInpainting: CMakeFiles/depthInpainting.dir/LRTVPHI.o
 depthInpainting: CMakeFiles/depthInpainting.dir/tnnr.o
@@ -299,6 +324,7 @@ CMakeFiles/depthInpainting.dir/build: depthInpainting
 
 CMakeFiles/depthInpainting.dir/requires: CMakeFiles/depthInpainting.dir/LRL0.o.requires
 CMakeFiles/depthInpainting.dir/requires: CMakeFiles/depthInpainting.dir/main.o.requires
+CMakeFiles/depthInpainting.dir/requires: CMakeFiles/depthInpainting.dir/NonNorm.o.requires
 CMakeFiles/depthInpainting.dir/requires: CMakeFiles/depthInpainting.dir/LRL0PHI.o.requires
 CMakeFiles/depthInpainting.dir/requires: CMakeFiles/depthInpainting.dir/LRTVPHI.o.requires
 CMakeFiles/depthInpainting.dir/requires: CMakeFiles/depthInpainting.dir/tnnr.o.requires

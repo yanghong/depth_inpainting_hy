@@ -8,6 +8,8 @@
 #include "LRL0.hpp"
 #include "LRL0PHI.hpp"
 #include <numeric>
+#include "NonNorm.h"
+
 using namespace cv;
 using namespace std;
 
@@ -359,7 +361,7 @@ int main(int argc, char ** argv)
   else
     {
       cout << "Argument Error!" << endl;
-      cout << argv[1] << endl;
+      cout << instruction << endl;
     }
   return 0;
 }

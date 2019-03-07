@@ -1,6 +1,7 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/depthInpainting.dir/LRL0.o"
   "CMakeFiles/depthInpainting.dir/main.o"
+  "CMakeFiles/depthInpainting.dir/NonNorm.o"
   "CMakeFiles/depthInpainting.dir/LRL0PHI.o"
   "CMakeFiles/depthInpainting.dir/LRTVPHI.o"
   "CMakeFiles/depthInpainting.dir/tnnr.o"

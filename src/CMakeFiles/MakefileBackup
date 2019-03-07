@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/hy/depthInpainting-master/src
 CMakeFiles/depthInpainting.dir/all:
 	$(MAKE) -f CMakeFiles/depthInpainting.dir/build.make CMakeFiles/depthInpainting.dir/depend
 	$(MAKE) -f CMakeFiles/depthInpainting.dir/build.make CMakeFiles/depthInpainting.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles  1 2 3 4 5 6 7 8 9
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hy/depthInpainting-master/src/CMakeFiles  1 2 3 4 5 6 7 8
 	@echo "Built target depthInpainting"
 .PHONY : CMakeFiles/depthInpainting.dir/all
 
@@ -69,7 +69,7 @@ all: CMakeFiles/depthInpainting.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/depthInpainting.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hy/depthInpainting-master/src/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hy/depthInpainting-master/src/CMakeFiles 8
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/depthInpainting.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/hy/depthInpainting-master/src/CMakeFiles 0
 .PHONY : CMakeFiles/depthInpainting.dir/rule

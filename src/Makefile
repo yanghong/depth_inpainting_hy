@@ -172,6 +172,21 @@ LRTVPHI.s:
 .PHONY : LRTVPHI.s
 
 # target to build an object file
+NonNorm.o:
+	$(MAKE) -f CMakeFiles/depthInpainting.dir/build.make CMakeFiles/depthInpainting.dir/NonNorm.o
+.PHONY : NonNorm.o
+
+# target to preprocess a source file
+NonNorm.i:
+	$(MAKE) -f CMakeFiles/depthInpainting.dir/build.make CMakeFiles/depthInpainting.dir/NonNorm.i
+.PHONY : NonNorm.i
+
+# target to generate assembly for a file
+NonNorm.s:
+	$(MAKE) -f CMakeFiles/depthInpainting.dir/build.make CMakeFiles/depthInpainting.dir/NonNorm.s
+.PHONY : NonNorm.s
+
+# target to build an object file
 common.o:
 	$(MAKE) -f CMakeFiles/depthInpainting.dir/build.make CMakeFiles/depthInpainting.dir/common.o
 .PHONY : common.o
@@ -252,6 +267,9 @@ help:
 	@echo "... LRTVPHI.o"
 	@echo "... LRTVPHI.i"
 	@echo "... LRTVPHI.s"
+	@echo "... NonNorm.o"
+	@echo "... NonNorm.i"
+	@echo "... NonNorm.s"
 	@echo "... common.o"
 	@echo "... common.i"
 	@echo "... common.s"

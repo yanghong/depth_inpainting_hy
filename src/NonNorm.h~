@@ -1,0 +1,19 @@
+#ifndef __NONNORM_H_
+#define __NONNORM_H_
+#include <opencv2/opencv.hpp>
+#include <iostream>
+
+using namespace std;
+using namespace cv;
+
+struct MatInfo{
+	Mat X;
+	Vec2d T;
+}
+
+MatInfo NONNORM(Mat &D,float rho,Vec2d T0, float gamma);
+
+MatInfo DCInner(Mat &S, float rho, Vec2d J, float epislon, Mat &U, Mat &V);
+
+
+#endif
