@@ -12,11 +12,11 @@ using namespace cv;
 // Low-Rank Total Variation for Image Inpainting
 class LRL0PHI
 {
-  Mat U_;
-  Mat U_last_;
+  Mat U_;  // 原图像
+  Mat U_last_;  // 最近的图像备份
   Mat mask_; //mask for the missing pixels: 0 indicates missing
-  Mat I_, M_, Y_;
-  int W_, H_;
+  Mat I_, M_, Y_;  
+  int W_, H_; // 矩阵的宽度和高度
   float rho_, dt_, h_, lambda_l0_, k_;
   float lambda_rank_, alpha_;
     

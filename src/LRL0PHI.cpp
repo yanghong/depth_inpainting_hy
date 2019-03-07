@@ -7,16 +7,19 @@
 #include "common.h"
 #define garma 2.2
 int iters1;
+
+// element的结构体定义
 // class element{
 // public:
 //     int w;
 //     int w_mask;
 //     float Y;
 //     float M_mean, Y_mean, I_mean;
-//     list<int> G,N;
-//     map<int,int> c;
+//     list<int> G,N;     // 列表
+//     map<int,int> c;    // 以两个整型为一对的图
 // };
 
+// 从列表迭代器中找到值为value的位置
 // list<int>::iterator ffind(list<int>::iterator start, list<int>::iterator end, int value)
 // {
 //     list<int>::iterator p = start;
@@ -35,6 +38,7 @@ int iters1;
 //     return ans;
 // }
 
+// 从图迭代器中找到值为value的位置
 // map<int, int>::iterator ffind(map<int, int>::iterator start, map<int, int>::iterator end, int value)
 // {
 //     map<int, int>::iterator p = start;
@@ -47,52 +51,58 @@ int iters1;
 //     return p;
 // }
 
+// 返回U_
 Mat LRL0PHI::getU()
 {
     return U_;
 }
 
+// 返回M_
 Mat LRL0PHI::getM()
 {
     return M_;
 }
 
+// 返回Y_
 Mat LRL0PHI::getY()
 {
     return Y_;
 }
 
 // change to 32bit grayImage
+// 初始化 M_
 void LRL0PHI::init_U(Mat &u0)
 {
     u0.convertTo(M_, CV_32FC1);
 }
 
+// 初始化LRL0PHI.hpp中定义的各种矩阵
 // mask: uint8_t type 1 channel taking values 0 and 255
 // I: uint8_t grayscale image
 LRL0PHI::LRL0PHI(Mat &I, Mat &mask)
 {
-    W_ = I.cols;
-    H_ = I.rows;
-    I_ = Mat::zeros(H_, W_, CV_32F);
-    mask_ = Mat::zeros(H_, W_, CV_32F);
+    W_ = I.cols;  //列（宽度）
+    H_ = I.rows;  //行（高度）
+    I_ = Mat::zeros(H_, W_, CV_32F);  // 全为0的同型矩阵
+    mask_ = Mat::zeros(H_, W_, CV_32F);  // 全为0的同型矩阵
     
-    I.convertTo(I_, CV_32FC1, 1.0);
-    mask.convertTo(mask_, CV_32FC1, 1.0/255.0);
+    I.convertTo(I_, CV_32FC1, 1.0);  // I转化为全为1的同型矩阵，像素类型为CV_32FC1
+    mask.convertTo(mask_, CV_32FC1, 1.0/255.0);  // mask转化为全为1.0/255.0的同型矩阵，像素类型为CV_32FC1
     // initialize
-    U_ = Mat::zeros(H_, W_, CV_32F);
-    U_last_ = Mat::zeros(H_, W_, CV_32F);
+    U_ = Mat::zeros(H_, W_, CV_32F); // U_初始化为0的同型矩阵
+    U_last_ = Mat::zeros(H_, W_, CV_32F);  // U_last_初始化为0的同型矩阵
     // internal variables
-    M_ = Mat::zeros(H_, W_, CV_32F);
-    Y_ = Mat::zeros(H_, W_, CV_32F);
+    M_ = Mat::zeros(H_, W_, CV_32F);  // M_初始化为0的同型矩阵
+    Y_ = Mat::zeros(H_, W_, CV_32F);  // Y_初始化为0的同型矩阵
     
     // make gradient operators
-    kernelx_plus_ = (Mat_<float>(1,3)<<0.0,-1.0,1.0);
-    kernelx_minus_ = (Mat_<float>(1,3)<<-1.0,1.0,0.0);
-    kernely_plus_ = (Mat_<float>(3,1)<<0.0,-1.0,1.0);
-    kernely_minus_ = (Mat_<float>(3,1)<<-1.0,1.0,0.0);
+    kernelx_plus_ = (Mat_<float>(1,3)<<0.0,-1.0,1.0);   // 定义形状为（1，3）的矩阵
+    kernelx_minus_ = (Mat_<float>(1,3)<<-1.0,1.0,0.0);   // 定义形状为（1，3）的矩阵
+    kernely_plus_ = (Mat_<float>(3,1)<<0.0,-1.0,1.0);   // 定义形状为（3，1）的矩阵
+    kernely_minus_ = (Mat_<float>(3,1)<<-1.0,1.0,0.0);   // 定义形状为（3，1）的矩阵
 }
 
+// 需要搞清楚这几个参数的含义?
 void LRL0PHI::setParameters(float rho, float dt, float lambda_l0, float lambda_rank, float k)
 {
     rho_ = rho;
@@ -102,7 +112,7 @@ void LRL0PHI::setParameters(float rho, float dt, float lambda_l0, float lambda_r
     lambda_rank_ = lambda_rank; //10;
     lambda_l0_ = lambda_l0;
     k_ = k;
-    //    cout << "set parameters done" << endl;
+    cout << "set parameters done" << endl;
 }
 
 void LRL0PHI::sub_1(int K)
@@ -111,16 +121,17 @@ void LRL0PHI::sub_1(int K)
 
     float epsilon = 1.0e-4;
     map<int, element> I;
+    // travel every pixel in U_
     for(int i = 0; i < U_.rows; i++)
     {
         for(int j = 0; j < U_.cols; j++)
         {
-            int index = i*U_.cols+j;
-            element temp;
-            temp.G.push_back(index);
-            temp.w = 1;
-            temp.w_mask = mask_.at<float>(i,j) == 0 ? 0 : 1;
-            temp.I_mean = temp.w_mask * I_.at<float>(i,j);
+            int index = i*U_.cols+j;    //某一像素定位点
+            element temp;               // 每一个像素都会创建一个temp 
+            temp.G.push_back(index);    // G的类型应该是一个List, index是索引
+            temp.w = 1;       // w系数的含义
+            temp.w_mask = mask_.at<float>(i,j) == 0 ? 0 : 1;  // mask_如果在i,j这个位置=0，则temp.w_mask为0，否则为1
+            temp.I_mean = temp.w_mask * I_.at<float>(i,j);  // I_mean等于I_在i,j位置的像素值*此点的w_mask值
             if(!(temp.I_mean == temp.I_mean))
             {
 	      //                cout << mask_.at<float>(i,j) << endl;
@@ -130,7 +141,7 @@ void LRL0PHI::sub_1(int K)
             temp.M_mean = M_.at<float>(i,j);
             temp.Y_mean = Y_.at<float>(i,j);
             temp.Y = (float)(temp.w*rho_*(temp.M_mean - temp.Y_mean) + 2*temp.w_mask*temp.I_mean)/
-                     (float)(temp.w*rho_ + 2*temp.w_mask);
+                     (float)(temp.w*rho_ + 2*temp.w_mask);  // Y是求解ADMM最后的一个值
             //temp.Y = U_.at<float>(i,j);
             if(i != 0)
             {
@@ -152,29 +163,32 @@ void LRL0PHI::sub_1(int K)
                 temp.N.push_back(i*U_.cols+j+1);
                 temp.c.insert(pair<int,int>(i*U_.cols+j+1,1));
             }
-            I.insert(pair<int,element>(index,temp));
+            I.insert(pair<int,element>(index,temp));  // I从结构上看temp.N是某一像素的邻接像素，I的结构是每个像素点的element的索引
         }
     }
+    cout << "I: " << I <<endl;
+    // Get element I(map<int, element>) Done.
     //    cout << "1 is done" << endl;
-    map<int, element>::iterator i;
-    for(i = I.begin(); i != I.end(); ++i)
-        for(list<int>::iterator j = i->second.G.begin(); j != i->second.G.end(); ++j)
+    map<int, element>::iterator i;   // 以int,element为组合的图的迭代器
+    for(i = I.begin(); i != I.end(); ++i)   // 对I进行遍历
+        for(list<int>::iterator j = i->second.G.begin(); j != i->second.G.end(); ++j)  // 对I中的G进行遍历
             U_.at<float>(*j/U_.cols, *j % U_.cols) = i->second.Y;
     float beta = 0;
     iter = 0;
+    // 下面的应该是区域融合算法
     while(1)
     {
-        map<int,element>::iterator it = I.begin();
+        map<int,element>::iterator it = I.begin();  // 遍历I的迭代器it
         while(it != I.end())
         {
             int i = it->first;
-            for(list<int>::iterator j = I[i].N.begin(); j != I[i].N.end();)
+            for(list<int>::iterator j = I[i].N.begin(); j != I[i].N.end();)  // 对I中每一个元素的领域N进行遍历
             {
                 float value1 = 0;
                 float value2 = 0;
                 float value3 = 0;
                 element temp1 = I[i];
-                element temp2 = I[*j];
+                element temp2 = I[*j];    // 为什么这里要用指针?
                 value1 = (temp1.w * temp1.w_mask * rho_ * pow(temp1.I_mean - temp1.M_mean + temp1.Y_mean,
                              2) / (temp1.w * rho_ + 2 * temp1.w_mask)) +
                          (temp2.w * temp2.w_mask * rho_ * pow(temp2.I_mean - temp2.M_mean + temp2.Y_mean, 2) / (temp2.w * rho_ + 2 * temp2.w_mask)) +
@@ -220,17 +234,17 @@ void LRL0PHI::sub_1(int K)
                 }*/
                 // if(!(value1 == value1 && value2 == value2 && value3 == value3))
                 //     cout <<value3 << " " << value2 << " " << value1 << endl;
-                if(value3 < (value1 < value2 ? value1 : value2))
+                if(value3 < (value1 < value2 ? value1 : value2))  // value3 小于value1和value2中的最小值，相当于论文中的fA <= fB and fA <= fC
                 {
                     temp1.Y = Xi;
                     temp2.Y = Xj;
                     j++;
                 }
-                else if(value2 <= (value1 < value3 ? value1 : value3))
+                else if(value2 <= (value1 < value3 ? value1 : value3))   // value2小于 value1和value3 中的最小值，相当于论文中的fB <= fA and fB <= fC
                 {
                     //cout << value2 << " " << value1 << endl;
                     int temp_value = *j;
-                    list<int> t1 = I[i].G;
+                    list<int> t1 = I[i].G;  // 该像素下的邻近区域，不同于N，这个邻近区域的概念应该比较大一点的区域,可以参考论文[28]
                     list<int> t2 = I[*j].G;
                     I[i].Y = X;
                     I[i].Y_mean = (I[i].Y_mean*I[i].w + I[*j].Y_mean*I[*j].w)/(I[i].w + I[*j].w);
@@ -326,7 +340,7 @@ void LRL0PHI::sub_1(int K)
     imwrite("./result/"+name, temp);
 }
 
-
+// LR
 void LRL0PHI::sub_2()
 {
     Mat A = U_ + Y_;
@@ -355,7 +369,7 @@ Mat LRL0PHI::compute(int K, int max_iter, string path, Mat &original, string pat
       cout << "Iter = " << (iter + 1) << endl;
       iters1 = iter;
       sub_1(K);
-      cout << "Piecewise L0 done" << endl;
+      cout << "Piecewise L0 done" << endl;  // 分段 L0  Done
       sub_2();
       cout << "LR done" << endl;
       sub_3();
@@ -379,6 +393,7 @@ Mat LRL0PHI::compute(int K, int max_iter, string path, Mat &original, string pat
       file1.close();
       cout << "result psnr in " + filePath << endl;
       // when to stop needs further con sideration
+	  // this code can't understand now??
       if( iter >= 1 && norm(U_, U_last_) / norm(U_last_) < 1e-3 )
 	{
 	  break;

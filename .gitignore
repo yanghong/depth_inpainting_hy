@@ -1,4 +1,9 @@
 *.cpp.swp
 *.cpp~
+*.swo
+*.swp
+*.swn
+*.swm
 LICENSE
 .gitignore~
+*.swl
