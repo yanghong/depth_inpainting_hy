@@ -346,24 +346,19 @@ void LRL0PHI::sub_2()
 {
 
     Mat A = U_ + Y_;
-	cout << "BreakPoint 1" << endl;
     // Mat mask = 255*Mat::ones(H_, W_, CV_8UC1);
 	Mat mask = Mat::zeros(min(H_,W_),1,CV_8UC1);
     float lambda = rho_ / 2.0 / lambda_rank_ / alpha_;
     
-	cout << "BreakPoint 2" << endl;
     // TNNR
     Mat At;
     A.convertTo(At, CV_8UC1);
    // M_ = TNNR(At, mask, 9, 9, lambda);
 	MatInfo matInfo;
-	cout << "BreakPoint 3" << endl;
 	matInfo = NONNORM(At,1e-3,mask,0.01);
 
-	cout << "BreakPoint 4" << endl;
 	M_ = matInfo.X;
 
-	cout << "BreakPoint 5" << endl;
     
 }
 

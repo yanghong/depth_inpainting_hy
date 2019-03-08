@@ -6,14 +6,56 @@
 
 #IncludeRegexTransform: 
 
-/home/hy/depthInpainting-master/src/NonNorm.cpp
+/home/hy/depthInpainting-master/src/LRL0PHI.cpp
+map
+-
+list
+-
+fstream
+-
+LRL0PHI.hpp
+/home/hy/depthInpainting-master/src/LRL0PHI.hpp
+util.h
+/home/hy/depthInpainting-master/src/util.h
+common.h
+/home/hy/depthInpainting-master/src/common.h
 NonNorm.h
 /home/hy/depthInpainting-master/src/NonNorm.h
+
+/home/hy/depthInpainting-master/src/LRL0PHI.hpp
+opencv2/opencv.hpp
+-
+iostream
+-
+map
+-
+list
+-
+tnnr.h
+/home/hy/depthInpainting-master/src/tnnr.h
 
 /home/hy/depthInpainting-master/src/NonNorm.h
 opencv2/opencv.hpp
 -
 iostream
+-
+
+/home/hy/depthInpainting-master/src/common.h
+map
+-
+list
+-
+opencv2/opencv.hpp
+-
+
+/home/hy/depthInpainting-master/src/tnnr.h
+opencv2/opencv.hpp
+-
+iostream
+-
+
+/home/hy/depthInpainting-master/src/util.h
+opencv2/opencv.hpp
 -
 
 /usr/local/include/opencv2/calib3d/calib3d.hpp
