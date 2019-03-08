@@ -8,6 +8,8 @@
 #include "LRL0.hpp"
 #include "LRL0PHI.hpp"
 #include <numeric>
+#include "NonNorm.h"
+
 using namespace cv;
 using namespace std;
 
@@ -56,6 +58,7 @@ int main(int argc, char ** argv)
     }
   else if( instruction == "G" )
     {
+	  // depthImage missingRate outputMask outputMissing
       string disparityPath = argv[2];
       int missingRate = atof(argv[3]);//atof function??
       string outputMask = argv[4];
@@ -65,7 +68,7 @@ int main(int argc, char ** argv)
       int W = disparityOriginal.cols;
       int H = disparityOriginal.rows;
 
-      RNG rng;
+      RNG rng; // Random class
       // mask: 0 indicates missing pixels
       Mat mask = Mat::zeros(H, W, CV_8U);
       rng.fill(mask, RNG::UNIFORM, 0, 255);
@@ -211,12 +214,20 @@ int main(int argc, char ** argv)
     }
     else if( instruction == "L0" )
     {
-      Mat dispU = imread(argv[2], CV_LOAD_IMAGE_GRAYSCALE);
+		// get Gray image
+      Mat dispU = imread(rgv[2], CV_LOAD_IMAGE_GRAYSCALE);
+	  // height
       int H = dispU.rows;
+	  // weight
       int W = dispU.cols;
+	  // init a all zeros martrix
       Mat disp = Mat::zeros(H, W, CV_32FC1);
+	  // change dispU to disp , type is CV_32FC1
+	  // function converTo() is change matrix type
       dispU.convertTo(disp, CV_32FC1);
       
+	  // Mat_<float>----------CV_32F
+	  
       Mat kernelx_plus_ = (Mat_<float>(1,3)<<0.0,-1.0,1.0);
       Mat kernelx_minus_ = (Mat_<float>(1,3)<<-1.0,1.0,0.0);
       Mat kernely_plus_ = (Mat_<float>(3,1)<<0.0,-1.0,1.0);

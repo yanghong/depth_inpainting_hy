@@ -5,6 +5,7 @@
 #include "LRL0PHI.hpp"
 #include "util.h"
 #include "common.h"
+#include "NonNorm.h"
 #define garma 2.2
 int iters1;
 
@@ -166,7 +167,7 @@ void LRL0PHI::sub_1(int K)
             I.insert(pair<int,element>(index,temp));  // I从结构上看temp.N是某一像素的邻接像素，I的结构是每个像素点的element的索引
         }
     }
-    cout << "I: " << I <<endl;
+   // cout << "I: " << I <<endl;
     // Get element I(map<int, element>) Done.
     //    cout << "1 is done" << endl;
     map<int, element>::iterator i;   // 以int,element为组合的图的迭代器
@@ -343,15 +344,26 @@ void LRL0PHI::sub_1(int K)
 // LR
 void LRL0PHI::sub_2()
 {
+
     Mat A = U_ + Y_;
-    Mat mask = 255*Mat::ones(H_, W_, CV_8UC1);
+	cout << "BreakPoint 1" << endl;
+    // Mat mask = 255*Mat::ones(H_, W_, CV_8UC1);
+	Mat mask = Mat::zeros(min(H_,W_),1,CV_8UC1);
     float lambda = rho_ / 2.0 / lambda_rank_ / alpha_;
     
+	cout << "BreakPoint 2" << endl;
     // TNNR
     Mat At;
     A.convertTo(At, CV_8UC1);
-    M_ = TNNR(At, mask, 9, 9, lambda);
-    
+   // M_ = TNNR(At, mask, 9, 9, lambda);
+	MatInfo matInfo;
+	cout << "BreakPoint 3" << endl;
+	matInfo = NONNORM(At,1e-3,mask,0.01);
+
+	cout << "BreakPoint 4" << endl;
+	M_ = matInfo.X;
+
+	cout << "BreakPoint 5" << endl;
     
 }
 

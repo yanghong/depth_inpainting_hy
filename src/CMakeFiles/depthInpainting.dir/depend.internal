@@ -37,6 +37,7 @@ CMakeFiles/depthInpainting.dir/LRL0.o
 CMakeFiles/depthInpainting.dir/LRL0PHI.o
  /home/hy/depthInpainting-master/src/LRL0PHI.cpp
  /home/hy/depthInpainting-master/src/LRL0PHI.hpp
+ /home/hy/depthInpainting-master/src/NonNorm.h
  /home/hy/depthInpainting-master/src/common.h
  /home/hy/depthInpainting-master/src/tnnr.h
  /home/hy/depthInpainting-master/src/util.h

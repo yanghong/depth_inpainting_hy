@@ -215,7 +215,7 @@ int main(int argc, char ** argv)
     else if( instruction == "L0" )
     {
 		// get Gray image
-      Mat dispU = imread(rgv[2], CV_LOAD_IMAGE_GRAYSCALE);
+      Mat dispU = imread(argv[2], CV_LOAD_IMAGE_GRAYSCALE);
 	  // height
       int H = dispU.rows;
 	  // weight
