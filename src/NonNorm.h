@@ -11,11 +11,11 @@ struct MatInfo{
 	Mat T;
 };
 
-MatInfo NONNORM(Mat &D,float rho,Mat T0, float gamma);
+MatInfo NONNORM(Mat &D,float rho,Mat &T0, float gamma);
 
-MatInfo DCInner(Mat &S, float rho, Mat J, float epislon, Mat &U, Mat &V);
+MatInfo DCInner(Mat &S, float rho, Mat &J, float epislon, Mat &U, Mat &V);
 
-float sum(Mat &mat);
+float NonSum(Mat &mat);
 
 
 #endif

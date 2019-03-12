@@ -347,15 +347,15 @@ void LRL0PHI::sub_2()
 
     Mat A = U_ + Y_;
     // Mat mask = 255*Mat::ones(H_, W_, CV_8UC1);
-	Mat mask = Mat::zeros(min(H_,W_),1,CV_8UC1);
+    Mat mask = Mat::zeros(min(H_,W_),1,CV_8UC1);
     float lambda = rho_ / 2.0 / lambda_rank_ / alpha_;
     
     // TNNR
     Mat At;
     A.convertTo(At, CV_8UC1);
-   // M_ = TNNR(At, mask, 9, 9, lambda);
+    // M_ = TNNR(At, mask, 9, 9, lambda);
 	MatInfo matInfo;
-	matInfo = NONNORM(At,1e-3,mask,0.01);
+	matInfo = NONNORM(At,0.025,mask,0.01);
 
 	M_ = matInfo.X;
 

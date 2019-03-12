@@ -1,6 +1,7 @@
 #include "NonNorm.h"
+#include <fstream>
 
-MatInfo NONNORM(Mat &D,float rho,Mat T0,float gamma){
+MatInfo NONNORM(Mat &D,float rho,Mat &T0,float gamma){
 	Mat U,S,V,outputT,outputPow;
 	MatInfo getMatInfo;
 	MatInfo returnMatInfo;
@@ -15,11 +16,18 @@ MatInfo NONNORM(Mat &D,float rho,Mat T0,float gamma){
 	SVD::compute(DType, S, U, V);
 
 	// itera 1:100
-	for (int i = 1; i< 101; i++) {
+	for (int i = 1; i< 201; i++) {
 		getMatInfo = DCInner(S,rho,T0Type,gamma,U,V);
+
 		subtract(getMatInfo.T,T0Type,outputT);
 		pow(outputT,2,outputPow);
-		float err = sum(outputPow);
+		float err;
+		for (int row = 0;row< outputPow.rows;row++) {
+			float *data = outputPow.ptr<float>(row);
+			for(int col=0;col<outputPow.cols;col++) {
+				err = err + data[col];
+			}
+		}
 		if(err < 1e-6){
 			break;
 		}
@@ -33,16 +41,16 @@ MatInfo NONNORM(Mat &D,float rho,Mat T0,float gamma){
 	return returnMatInfo;
 }
 
-MatInfo DCInner(Mat &S, float rho, Mat J , float epislon, Mat &U, Mat &V) {
+MatInfo DCInner(Mat &S, float rho, Mat &J , float epislon, Mat &U, Mat &V) {
 	MatInfo matInfo;
 	float lambda = 0.5/rho;
 	Mat zeroMat = Mat::zeros(J.rows,J.cols,CV_32FC1);
 	Mat outputGrad;
 
-	Mat S0 = Mat::diag(S);
+	// Mat S0 = Mat::diag(S);
 	exp(-J/epislon,outputGrad);
 	Mat grad = outputGrad/epislon;
-	Mat t = max(S0 - lambda*grad,0.0);
+	Mat t = max(S - lambda*grad,0.0);
 	Mat tDiag = Mat::diag(t);
 	Mat X = U * tDiag * V;
 	matInfo.X = X;
@@ -50,12 +58,16 @@ MatInfo DCInner(Mat &S, float rho, Mat J , float epislon, Mat &U, Mat &V) {
 	return matInfo;
 }
 
-float sum(Mat &mat){
+float NonSum(Mat &mat){
+	ofstream filetemp3;
+	filetemp3.open("temp3.txt");
+	filetemp3 << "mat:" << mat << endl;
 	float s = 0.0f;
 	for(int row=0;row<mat.rows;row++){
-		uchar* data = mat.ptr<uchar>(row);
+		float *data = mat.ptr<float>(row);
 		for(int col=0;col<mat.cols;col++) {
 			s = s + data[col];
+			filetemp3 << "data[" << col << "]:" << data[col] << endl;
 		}
 	}
 	return s;
