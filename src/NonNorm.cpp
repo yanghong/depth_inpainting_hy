@@ -5,18 +5,42 @@ MatInfo NONNORM(Mat &D,float rho,Mat &T0,float gamma){
 	Mat U,S,V,outputT,outputPow;
 	MatInfo getMatInfo;
 	MatInfo returnMatInfo;
+	fstream file;
+	file.open("temp.txt");
+    
+    // set patch
+	int patchWidth = 9;
+	int patchHeight = 9;
 
 	Mat T0Type;
 	T0.convertTo(T0Type, CV_32FC1);
 	Mat DType;
 	D.convertTo(DType, CV_32FC1);
 
+	int patchI = DType.cols/patchWidth;
+    int patchJ = DType.rows/patchHeight;
+	file << "patchI: " << patchI << "patchJ: " << patchJ << endl;
+	Mat patch;
+	
+	cout << "patchI: " << patchI << endl;
+	cout << "patchJ: " << patchJ << endl;
+	for (int pi=0;pi<patchI;pi++) {
+		for(int pj=0;pj<patchJ;pj++) {
+			int positionX = pi * patchWidth;
+			int positionY = pj * patchHeight;
+			patch = DType(Range(positionY,positionY + 9),Range(positionX,positionX + 9));
+			file << "positionX: " << positionX << endl;
+			file << "positionY: " << positionY << endl;
+			file << "patch: " << patch << endl;
+		}
+	
+	}
 
 	// SVD -> D
 	SVD::compute(DType, S, U, V);
 
 	// itera 1:100
-	for (int i = 1; i< 201; i++) {
+	for (int i = 1; i< 101; i++) {
 		getMatInfo = DCInner(S,rho,T0Type,gamma,U,V);
 
 		subtract(getMatInfo.T,T0Type,outputT);
