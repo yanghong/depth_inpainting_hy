@@ -344,19 +344,32 @@ void LRL0PHI::sub_1(int K)
 // LR
 void LRL0PHI::sub_2()
 {
-
+    Mat At;
     Mat A = U_ + Y_;
-    // Mat mask = 255*Mat::ones(H_, W_, CV_8UC1);
-    Mat mask = Mat::zeros(25,1,CV_32FC1);// size of patch:50
-    float lambda = rho_ / 2.0 / lambda_rank_ / alpha_;
+    A.convertTo(At, CV_32FC1);
     
     // TNNR
-    Mat At;
-    A.convertTo(At, CV_32FC1);
-    // M_ = TNNR(At, mask, 9, 9, lambda);
-	MatInfo matInfo = NONNORM(At,0.05,mask,0.01);
+    // Mat maskTNNR = 255*Mat::ones(H_, W_, CV_8UC1);
+    // float lambda = rho_ / 2.0 / lambda_rank_ / alpha_;
+    // M_ = TNNR(At, maskTNNR, 9, 9, lambda);
+
+    // NONNORM
+	int patchSize = 25;
+    Mat mask = Mat::zeros(patchSize,1,CV_32FC1);// size of patch
+	MatInfo matInfo = NONNORM(At,0.01,mask,0.5,patchSize);
 	M_ = matInfo.X;
     
+}
+
+
+void LRL0PHI::sub_2_TNNR(){
+	Mat A = U_ + Y_;
+	Mat mask = 255*Mat::ones(H_,W_,CV_8UC1);
+
+    float lambda = rho_ / 2.0 / lambda_rank_ / alpha_;
+    Mat At;
+    A.convertTo(At, CV_32FC1);
+    M_ = TNNR(At, mask, 9, 9, lambda);
 }
 
 void LRL0PHI::sub_3()
@@ -376,7 +389,11 @@ Mat LRL0PHI::compute(int K, int max_iter, string path, Mat &original, string pat
       iters1 = iter;
       sub_1(K);
       cout << "Piecewise L0 done" << endl;  // 分段 L0  Done
-      sub_2();
+	  //if (iter < 40) {
+	  //sub_2();
+	  //} else {
+	  sub_2_TNNR();
+	  //}
       cout << "LR done" << endl;
       sub_3();
         
