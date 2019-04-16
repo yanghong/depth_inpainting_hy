@@ -347,23 +347,22 @@ void LRL0PHI::sub_2()
 
     Mat A = U_ + Y_;
     // Mat mask = 255*Mat::ones(H_, W_, CV_8UC1);
-    Mat mask = Mat::zeros(min(H_,W_),1,CV_8UC1);
+    Mat mask = Mat::zeros(25,1,CV_32FC1);// size of patch:50
     float lambda = rho_ / 2.0 / lambda_rank_ / alpha_;
     
     // TNNR
     Mat At;
-    A.convertTo(At, CV_8UC1);
+    A.convertTo(At, CV_32FC1);
     // M_ = TNNR(At, mask, 9, 9, lambda);
-	MatInfo matInfo;
-	matInfo = NONNORM(At,0.025,mask,0.01);
-
+	MatInfo matInfo = NONNORM(At,0.05,mask,0.01);
 	M_ = matInfo.X;
-
     
 }
 
 void LRL0PHI::sub_3()
 {
+	cout << "sub_3: M_ : " << M_.rows << " " << M_.cols << endl;
+	cout << "U_ : " << U_.rows << " " << U_.cols << endl;
     Y_ = Y_ + (U_ - M_);
 }
 
