@@ -3,39 +3,37 @@
 #include <cmath>
 #include <list>
 
-MatInfo NONNORM(Mat &D,float rho,Mat &T0,float gamma, int patchSize){
+MatInfo NONNORM(Mat &D,float rho,Mat &T0,float gamma){
 	Mat U,S,V,outputT,outputPow;
 	MatInfo getMatInfo;
 	MatInfo returnMatInfo;
 	ofstream file("temp.txt",ios::app);
     int count=0;
     // set patch
-	int patchWidth = patchSize;
-	int patchHeight = patchSize;
-	int stepsize = 15;
+	int patchWidth = 20;
+	int patchHeight = 20;
+	int stepsize = 14;
 	int m = D.rows;
 	int n = D.cols;
-	int R = m-patchWidth+1;
-	int C = n-patchWidth+1;
+	int R = m;
+	int C = n;
 	list<int> rr;
 	list<int> cc;
 
-	//cout << "brakpoint 2" << endl;
-
-	for(int si = 1; si < R; si++) {
+	for(int si = 1; si < R+1; si++) {
 		if(si%stepsize == 1) {
 			rr.push_back(si);
 		}
 	}
-	rr.push_back(rr.back()+stepsize);
-	for(int sj = 1; sj < C; sj++) {
+	//cout << "rr.back() " << rr.back() << endl;
+	//rr.push_back(rr.back()+1);
+	for(int sj = 1; sj < C+1; sj++) {
 		if(sj%stepsize == 1){
 			cc.push_back(sj);
 		}
 	}
-	cc.push_back(cc.back()+stepsize);
-
-	//cout << "brakpoint 3" << endl;
+	//cout << "cc.back() " << cc.back() << endl;
+	cc.push_back(D.cols);
 
 	int rrLength = rr.size();
     int ccLength = cc.size();
@@ -43,66 +41,124 @@ MatInfo NONNORM(Mat &D,float rho,Mat &T0,float gamma, int patchSize){
 	list<int>::iterator ccIter;
 	rrIter = rr.begin();
 	ccIter = cc.begin();
-    //cout << "rrLength: " << rrLength << endl;
-	//cout << "ccLength: " << ccLength << endl;
 
-	//cout << "brakpoint 4" << endl;
 
 	Mat T0Type;
 	T0.convertTo(T0Type, CV_32FC1);
 	Mat DType;
 	D.convertTo(DType, CV_32FC1);
 
-	//cout << "brakpoint 5" << endl;
-
 	int patchI = DType.cols/patchWidth;
     int patchJ = DType.rows/patchHeight;
 	Mat result(D.rows,D.cols,CV_32FC1);
 	Mat resultV(patchWidth,D.cols,CV_32FC1);
 
+
 	int positionX = 0;
 	int positionY = 0;
 
 	Mat resultHTemp;
-	Mat resultFill;
-	Mat resultStepsize;
-
-	//cout << "brakpoint 6" << endl;
-	
-	int pi=0;
-	int pj=0;
-
-	for (pi;pi<rrLength;pi++) {
-			//cout << "pi: " << pi << endl;
+	//cout << "point 1" << endl;
+	for (int pi=0;pi<rrLength;pi++) {
 			Mat resultH(stepsize,stepsize,CV_32FC1);
-			pj = 0;
 			if(rrIter != rr.end()) {
 				positionX = *rrIter;
 				++rrIter;
 				ccIter = cc.begin();
 			}
-		for(pj;pj<ccLength;pj++) {
+		for(int pj=0;pj<ccLength;pj++) {
 			if(ccIter != cc.end()) {
 				positionY = *ccIter;
 				++ccIter;
 			}
-			//cout << "breakpoint 6.6" << endl;
-			int positionYPlus = positionY + patchWidth;
-			int positionXPlus = positionX + patchWidth;
-			if (positionYPlus > DType.cols) {
-				positionYPlus = DType.cols;
+
+			// have to consider patch in edge
+
+			//cout << "pisitionX,Y: " << positionX << " " << positionY << endl;
+			int positionXWidth = positionX + patchWidth;
+			int positionYWidth = positionY + patchWidth;
+			Mat patch;
+			// last row in cols
+			if (positionX == DType.rows && positionYWidth < DType.cols){
+
+				//cout << "1positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth rows: " << positionXWidth << " " << positionYWidth << " DType.size: " << DType.rows << " " <<DType.cols << endl;		
+				patch = DType(Range(positionX-1,positionX),Range(positionY,positionY + patchWidth));
+			    //cout << "patch.size: " << patch.rows << " " << patch.cols << endl;
+				T0Type = T0Type(Range(0,1),Range(0,1));
+				//cout << "T0Type.size: " << T0Type.rows << " " << T0Type.cols << endl;
+			
+			// last col in rows
+			} else if (positionY == DType.cols && positionXWidth < DType.rows){
+
+				//cout << "2positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth rows: " << positionXWidth << " " << positionYWidth << " DType.size: " << DType.rows << " " <<DType.cols << endl;		
+				patch = DType(Range(positionX,positionX + patchWidth),Range(positionY-1,positionY));
+			    //cout << "patch.size: " << patch.rows << " " << patch.cols << endl;
+				T0Type = T0Type(Range(0,patch.rows),Range(0,1));
+				//cout << "T0Type.size: " << T0Type.rows << " " << T0Type.cols << endl;
+
+			// last row over cols
+			} else if (positionX == DType.rows && positionYWidth > DType.cols) {
+
+				//cout << "3positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth rows: " << positionXWidth << " " << positionYWidth << " DType.size: " << DType.rows << " " <<DType.cols << endl;		
+				patch = DType(Range(positionX-1,positionX),Range(positionY,DType.cols));
+			    //cout << "patch.size: " << patch.rows << " " << patch.cols << endl;
+				T0Type = T0Type(Range(0,1),Range(0,1));
+				//cout << "T0Type.size: " << T0Type.rows << " " << T0Type.cols << endl;
+			
+			// last col over rows
+			} else if (positionY == DType.cols && positionXWidth > DType.rows){
+			
+				//cout << "4positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth rows: " << positionXWidth << " " << positionYWidth << " DType.size: " << DType.rows << " " <<DType.cols << endl;		
+				patch = DType(Range(positionX,DType.rows),Range(positionY-1,positionY));
+			    //cout << "patch.size: " << patch.rows << " " << patch.cols << endl;
+				T0Type = T0Type(Range(0,patch.rows),Range(0,1));
+				//cout << "T0Type.size: " << T0Type.rows << " " << T0Type.cols << endl;
+			
+			} else if (positionXWidth > DType.rows && positionX != DType.rows && positionYWidth > DType.cols && positionY != DType.cols) {
+
+				//cout << "5positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth rows: " << positionXWidth << " " << positionYWidth << " DType.size: " << DType.rows << " " <<DType.cols << endl;		
+				patch = DType(Range(positionX,DType.rows),Range(positionY,DType.cols));
+			    //cout << "patch.size: " << patch.rows << " " << patch.cols << endl;
+				T0Type = T0Type(Range(0,DType.rows-positionX),Range(0,1));
+				//cout << "T0Type.size: " << T0Type.rows << " " << T0Type.cols << endl;
+
+			} else if (positionXWidth > DType.rows && positionX != DType.rows){
+
+				//cout << "6positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth rows: " << positionXWidth << " " << positionYWidth << " DType.size: " << DType.rows << " " <<DType.cols << endl;		
+				patch = DType(Range(positionX,DType.rows),Range(positionY,positionYWidth));
+			    //cout << "patch.size: " << patch.rows << " " << patch.cols << endl;
+				T0Type = T0Type(Range(0,DType.rows-positionX),Range(0,1));
+				//cout << "T0Type.size: " << T0Type.rows << " " << T0Type.cols << endl;
+
+			} else if (positionYWidth > DType.cols && positionY != DType.cols){
+
+				//cout << "positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth cols: " << positionXWidth << " " << positionYWidth <<" DType.cols:  " << DType.cols <<  endl;		
+				patch = DType(Range(positionX,positionXWidth),Range(positionY,DType.cols));
+			    //cout << "patch.size: " << patch.rows << " " << patch.cols << endl;
+
+			} else {
+
+				//cout << "positionX,Y: " << positionX << " " << positionY << endl;
+				//cout << "pisitionX,Y+patchWidth: " << positionXWidth << " " << positionYWidth << endl;
+				patch = DType(Range(positionX,positionX + patchWidth),Range(positionY,positionY + patchWidth));
+
 			}
-			if (positionXPlus > DType.rows) {
-				positionXPlus = DType.rows;
-			}
-			Mat patch = DType(Range(positionX,positionXPlus),Range(positionY,positionYPlus));
-			//cout << "breakpoint 6.5" << endl;
+
 			SVD::compute(patch, S, U, V);
-			//cout << "breakpoint 6.2" << endl;
 			for (int i101 = 1; i101< 101; i101++) {
 				getMatInfo = DCInner(S,rho,T0Type,gamma,U,V);
+				//cout << "point-i101-1" <<endl;
 				subtract(getMatInfo.T,T0Type,outputT);
+				//cout << "point-i101-2" <<endl;
 				pow(outputT,2,outputPow);
+				//cout << "point-i101-3" <<endl;
 				float err;
 				for (int row = 0;row< outputPow.rows;row++) {
 					float *data = outputPow.ptr<float>(row);
@@ -110,47 +166,60 @@ MatInfo NONNORM(Mat &D,float rho,Mat &T0,float gamma, int patchSize){
 						err = err + data[col];
 					}   
 				}   
+				//cout << "point-i101-4" <<endl;
 				if(err < 1e-6){
-					break;}   
-				getMatInfo.T.copyTo(T0Type);		
-			}
+					cout << "err break" << endl;
+					 break;
+				}   
+				//cout << "point-i101-5" <<endl;
+				getMatInfo.T.copyTo(T0Type);
+				//cout << "point-i101-6" <<endl;
+			  }
 			// hconcat must be rows equal
-			//cout << "breakpoint 6.1" << endl;
+			//cout << "point 5.1" << endl;
 			//cout << "getMatInfo.size: " << getMatInfo.X.rows << " " << getMatInfo.X.cols << endl;
-			if (getMatInfo.X.cols < stepsize) {
+			Mat resultStepsize;
+			if (getMatInfo.X.rows < stepsize && getMatInfo.X.cols < stepsize) {
+				//cout << "point 5.2" << endl;
+				resultStepsize = getMatInfo.X(Range(0,getMatInfo.X.rows),Range(0,getMatInfo.X.cols));
+			} else if (getMatInfo.X.cols < stepsize) {
+				//cout << "point 5.3" << endl;
 				resultStepsize = getMatInfo.X(Range(0,stepsize),Range(0,getMatInfo.X.cols));
+			} else if (getMatInfo.X.rows < stepsize){
+				//cout << "point 5.5" << endl;
+				resultStepsize = getMatInfo.X(Range(0,getMatInfo.X.rows),Range(0,stepsize));
 			} else {
+				//cout << "point 5.4" << endl;
 				resultStepsize = getMatInfo.X(Range(0,stepsize),Range(0,stepsize));
 			}
+			//cout << "point 5" << endl;
 			if (pj == 0) {
 				resultH = resultStepsize;
 			} else {
 				hconcat(resultH,resultStepsize,resultH);
-				cout << "breakpoint 6.3" << endl;
-				}
+			}
+			//cout << "point 4" << endl;
 			count++;
-			//cout << "resultH.cols: " << resultH.cols << " rows:"<< resultH.rows << " D.cols: " << D.cols << endl; 
-		    }
-			//cout << "breakpoint 7" << endl;
-		if (resultH.cols < D.cols && resultH.cols > D.cols-stepsize) {
+		}
+        
+		if (resultH.cols < D.cols) {
+			//cout << "D.cols: " << D.cols << "resultH.cols: " << resultH.cols << endl;
 			int gap = D.cols - resultH.cols;
-			//cout << "gap : " << gap << endl;
-			//cout << "getMatInfo.X.cols: " << getMatInfo.X.cols << endl;
-			resultFill = getMatInfo.X(Range(0,stepsize),Range(getMatInfo.X.cols - gap,getMatInfo.X.cols));
-			cout << "resultFill.size: " << resultFill.rows << " " << resultFill.cols << endl;
+			Mat resultFill = getMatInfo.X(Range(0,stepsize),Range(patchWidth - gap,patchWidth));
+			//cout << "point 3" << endl;
+			//cout << "resultH.size: " << resultH.rows << " " << resultH.cols << endl;
+			//cout << "resultFill.size: " << resultFill.rows << " " << resultFill.cols << endl;
 			hconcat(resultH,resultFill,resultH);
 		}
-		//cout << "breakpoint 8" << endl;
 		// vconcat must be columns equal
 		if (pi == 0) {
 			resultV = resultH;
 		} else {
 			vconcat(resultV,resultH,resultV);
-			//if (pj >= rrLength) {	
-			cout << "resultV: " << resultV.rows << " " << resultV.cols << endl;
-			//}
 		}
 	}
+
+	//cout << "point 2" << endl;
     resize(resultV,result,result.size(),INTER_LINEAR);
 	returnMatInfo.X = result;
 	returnMatInfo.T = getMatInfo.T;
@@ -159,42 +228,29 @@ MatInfo NONNORM(Mat &D,float rho,Mat &T0,float gamma, int patchSize){
 
 MatInfo DCInner(Mat &S, float rho, Mat &J , float epislon, Mat &U, Mat &V) {
 	ofstream file2("temp2.txt",ios::app);
-//	file2 << "J : " << J << endl;
 	MatInfo matInfo;
 	float lambda = rho;
-	//cout << "breakpoint 10 " << endl;
-	//Mat zeroMat = Mat::zeros(J.rows,J.cols,CV_32FC1);
-	//cout << "breakpoint 11 " << endl;
+	Mat zeroMat = Mat::zeros(J.rows,J.cols,CV_32FC1);
 	Mat outputGrad;
 
-    //zeroMat.at<float>(0,0) = J.at<float>(0,0);
-	//zeroMat.at<float>(0,1) = J.at<float>(0,1);
-	//zeroMat.at<float>(0,2) = J.at<float>(0,2);
-	//zeroMat.at<float>(0,3) = J.at<float>(0,3);
-	//zeroMat.at<float>(0,4) = J.at<float>(0,4);
-	//zeroMat.at<float>(0,5) = J.at<float>(0,5);
-	//zeroMat.at<float>(0,6) = J.at<float>(0,6);
-	//zeroMat.at<float>(0,4) = J.at<float>(0,4);
-	//zeroMat.at<float>(0,4) = J.at<float>(0,4);
-	//zeroMat.at<float>(0,4) = J.at<float>(0,4);
-
+	//cout << "J.size: " << J.rows << " " << J.cols << endl;
 	exp(-J/epislon,outputGrad);
-	//exp(-zeroMat/epislon,outputGrad);
-	//cout << "breakpoint 12 " << endl;
+	//cout << "point DCInner 1" << endl;
 	Mat grad = outputGrad/epislon;
-	//cout << "breakpoint 13 " << endl;
+	//cout << "point DCInner 2" << endl;
 	Mat t = max(S - lambda*grad,0.0);
-	//cout << "breakpoint 14 " << endl;
+	//cout << "point DCInner 3" << endl;
 	Mat tDiag = Mat::diag(t);
-	//cout << "breakpoint 15 " << endl;
+	//cout << "point DCInner 4" << endl;
 	//cout << "U.size: " << U.rows << " " << U.cols << endl;
 	//cout << "tDiag.size: " << tDiag.rows << " " << tDiag.cols << endl;
 	//cout << "V.size: " << V.rows << " " << V.cols << endl;
 	tDiag = tDiag(Range(0,V.rows),Range(0,U.cols));
 	Mat X = U * tDiag * V;
-	//cout << "breakpoint 16 " << endl;
+	//cout << "point DCInner 5" << endl;
 	X.copyTo(matInfo.X);
 	t.copyTo(matInfo.T);
+	//cout << "point DCInner 6" << endl;
 	return matInfo;
 }
 
